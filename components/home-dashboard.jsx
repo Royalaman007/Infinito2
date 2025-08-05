@@ -4,6 +4,45 @@ import { Card, CardContent } from "@/components/ui/card"
 import { StatsSection } from "./stats-section"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { useEffect, useState } from "react"
+
+// Client-side only date/time component to prevent hydration mismatch
+function ClientDateTime() {
+  const [dateTime, setDateTime] = useState({ date: "", time: "" })
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    const updateDateTime = () => {
+      const now = new Date()
+      setDateTime({
+        date: now.toLocaleDateString(),
+        time: now.toLocaleTimeString()
+      })
+    }
+    
+    updateDateTime()
+    const interval = setInterval(updateDateTime, 1000)
+    
+    return () => clearInterval(interval)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <>
+        <Badge className="bg-white/20 text-white border-white/30">📅 --</Badge>
+        <Badge className="bg-white/20 text-white border-white/30">🕒 --</Badge>
+      </>
+    )
+  }
+
+  return (
+    <>
+      <Badge className="bg-white/20 text-white border-white/30">📅 {dateTime.date}</Badge>
+      <Badge className="bg-white/20 text-white border-white/30">🕒 {dateTime.time}</Badge>
+    </>
+  )
+}
 
 export function HomeDashboard({ onStatClick }) {
   return (
@@ -16,8 +55,7 @@ export function HomeDashboard({ onStatClick }) {
             <p className="text-blue-100 text-lg">CA INFINITY 2025 - Administrative Control Center</p>
             <div className="flex items-center mt-4 space-x-4">
               <Badge className="bg-white/20 text-white border-white/30">🟢 System Online</Badge>
-              <Badge className="bg-white/20 text-white border-white/30">📅 {new Date().toLocaleDateString()}</Badge>
-              <Badge className="bg-white/20 text-white border-white/30">🕒 {new Date().toLocaleTimeString()}</Badge>
+              <ClientDateTime />
             </div>
           </div>
           <div className="hidden md:block">

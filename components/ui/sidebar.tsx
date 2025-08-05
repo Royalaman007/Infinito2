@@ -96,8 +96,17 @@ const SidebarProvider = React.forwardRef<
         : setOpen((open) => !open)
     }, [isMobile, setOpen, setOpenMobile])
 
+    // Set cookie only on client side
+    React.useEffect(() => {
+      if (typeof document !== 'undefined') {
+        document.cookie = `${SIDEBAR_COOKIE_NAME}=${open}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+      }
+    }, [open])
+
     // Adds a keyboard shortcut to toggle the sidebar.
     React.useEffect(() => {
+      if (typeof window === 'undefined') return;
+      
       const handleKeyDown = (event: KeyboardEvent) => {
         if (
           event.key === SIDEBAR_KEYBOARD_SHORTCUT &&
