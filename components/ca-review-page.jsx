@@ -125,16 +125,16 @@ export function CAReviewPage({ application, onBack }) {
                   <span className="text-sm font-medium text-gray-600">Application Status:</span>
                   <Badge variant="outline">Pending Review</Badge>
                 </div>
-                <div className="flex justify-between items-center">
+                {/* <div className="flex justify-between items-center">
                   <span className="text-sm font-medium text-gray-600">Review Deadline:</span>
                   <span className="font-medium text-orange-600">3 days remaining</span>
-                </div>
+                </div> */}
               </CardContent>
             </Card>
           </div>
 
           {/* Additional Information */}
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileText className="h-5 w-5" />
@@ -157,7 +157,7 @@ export function CAReviewPage({ application, onBack }) {
                 </div>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Review Notes */}
           <Card>

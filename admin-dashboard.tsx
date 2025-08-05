@@ -18,7 +18,7 @@ import { Users, FileText, Shield, AlertCircle, Eye, Edit, Check, X } from "lucid
 
 export default function Component() {
   const [selectedView, setSelectedView] = useState("overview")
-  
+
 
   // Mock data based on the wireframe
   const stats = {

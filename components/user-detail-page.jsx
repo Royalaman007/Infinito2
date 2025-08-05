@@ -163,7 +163,7 @@ export function UserDetailPage({ user, onBack }) {
           </Card>
 
           {/* Activity & Statistics */}
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Activity className="h-5 w-5" />
@@ -190,10 +190,10 @@ export function UserDetailPage({ user, onBack }) {
                 </div>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Security & Permissions */}
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Shield className="h-5 w-5" />
@@ -220,7 +220,7 @@ export function UserDetailPage({ user, onBack }) {
                 </div>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Actions */}
           <div className="flex gap-4 justify-end">
