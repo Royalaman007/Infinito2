@@ -7,9 +7,11 @@ import { UsersTable } from "./components/users-table"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { CAApplications } from "./components/ca-applications"
 import { HomeDashboard } from "./components/home-dashboard"
+import { UserDetailPage } from "./components/user-detail-page"
 
 export default function AdminPortal() {
   const [activeTab, setActiveTab] = useState("home")
+  const [selectedUser, setSelectedUser] = useState(null)
 
   const handleStatClick = (type) => {
     console.log(`Clicked on ${type} stat`)
@@ -20,13 +22,26 @@ export default function AdminPortal() {
     }
   }
 
+  const handleUserInfoClick = (user) => {
+    setSelectedUser(user)
+    setActiveTab("user-detail")
+  }
+
+  const handleBackToUsers = () => {
+    setSelectedUser(null)
+    setActiveTab("users")
+  }
+
   const renderContent = () => {
     switch (activeTab) {
       case "home":
         return <HomeDashboard onStatClick={handleStatClick} />
 
       case "users":
-        return <UsersTable />
+        return <UsersTable onUserInfoClick={handleUserInfoClick} />
+
+      case "user-detail":
+        return <UserDetailPage user={selectedUser} onBack={handleBackToUsers} />
 
       case "ca":
         return <CAApplications />

@@ -6,9 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
-export function UsersTable() {
+export function UsersTable({ onUserInfoClick }) {
   const [users, setUsers] = useState([
     { id: 1, username: "john_doe", role: "user", status: "active", joinDate: "2024-01-10" },
     { id: 2, username: "jane_admin", role: "admin", status: "active", joinDate: "2024-01-08" },
@@ -22,6 +21,13 @@ export function UsersTable() {
     console.log(`Changed user ${userId} role to ${newRole}`)
   }
 
+  const handleInfoClick = (user) => {
+    console.log("Info button clicked for user:", user.username)
+    if (onUserInfoClick) {
+      onUserInfoClick(user)
+    }
+  }
+
   const getRoleBadgeColor = (role) => {
     switch (role) {
       case "admin":
@@ -33,6 +39,23 @@ export function UsersTable() {
       default:
         return "bg-gray-100 text-gray-800"
     }
+  }
+
+  const getRoleIcon = (role) => {
+    switch (role) {
+      case "admin":
+        return "👑"
+      case "moderator":
+        return "⚖️"
+      case "ca":
+        return "🛡️"
+      default:
+        return "👤"
+    }
+  }
+
+  const getStatusIcon = (status) => {
+    return status === "active" ? "🟢" : "🔴"
   }
 
   return (
@@ -75,72 +98,17 @@ export function UsersTable() {
                 </TableCell>
                 <TableCell>
                   <Badge variant={user.status === "active" ? "default" : "secondary"}>
-                    {user.status === "active" ? "🟢" : "🔴"} {user.status}
+                    {getStatusIcon(user.status)} {user.status}
                   </Badge>
                 </TableCell>
                 <TableCell>{user.joinDate}</TableCell>
                 <TableCell>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button size="sm" variant="outline" className="text-blue-600 border-blue-300 bg-transparent">
-                        ℹ️ Info
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-md">
-                      <DialogHeader>
-                        <DialogTitle>👤 User Information</DialogTitle>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <label className="text-sm font-medium text-gray-600">User ID:</label>
-                            <p className="font-mono text-sm">{user.id}</p>
-                          </div>
-                          <div>
-                            <label className="text-sm font-medium text-gray-600">Username:</label>
-                            <p className="font-medium">{user.username}</p>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <label className="text-sm font-medium text-gray-600">Role:</label>
-                            <Badge className={getRoleBadgeColor(user.role)}>
-                              {user.role === "admin"
-                                ? "👑"
-                                : user.role === "moderator"
-                                  ? "⚖️"
-                                  : user.role === "ca"
-                                    ? "🛡️"
-                                    : "👤"}{" "}
-                              {user.role}
-                            </Badge>
-                          </div>
-                          <div>
-                            <label className="text-sm font-medium text-gray-600">Status:</label>
-                            <Badge variant={user.status === "active" ? "default" : "secondary"}>
-                              {user.status === "active" ? "🟢" : "🔴"} {user.status}
-                            </Badge>
-                          </div>
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium text-gray-600">Join Date:</label>
-                          <p>{user.joinDate}</p>
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium text-gray-600">Email:</label>
-                          <p className="text-blue-600">{user.username}@company.com</p>
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium text-gray-600">Last Login:</label>
-                          <p>2024-01-20 14:30:25</p>
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium text-gray-600">Total Sessions:</label>
-                          <p>127 sessions</p>
-                        </div>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+                  <button 
+                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 rounded-md px-3 border border-input bg-background hover:bg-accent hover:text-accent-foreground text-blue-600 border-blue-300 bg-transparent"
+                    onClick={() => handleInfoClick(user)}
+                  >
+                    ℹ️ Info
+                  </button>
                 </TableCell>
               </TableRow>
             ))}
