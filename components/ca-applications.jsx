@@ -7,10 +7,8 @@ import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
-export function CAApplications() {
+export function CAApplications({ onCAReviewClick }) {
   const [caApplications, setCaApplications] = useState([
     {
       id: "CA001",
@@ -96,6 +94,13 @@ export function CAApplications() {
     console.log(`Changed CA ${caId} status to ${newStatus}`)
   }
 
+  const handleReviewClick = (application) => {
+    console.log("Review button clicked for application:", application.id)
+    if (onCAReviewClick) {
+      onCAReviewClick(application)
+    }
+  }
+
   const pendingApplications = caApplications.filter((app) => app.status === "pending")
   const processedApplications = caApplications.filter((app) => app.status !== "pending")
 
@@ -167,54 +172,13 @@ export function CAApplications() {
                           <TableCell>{app.appliedDate}</TableCell>
                           <TableCell>
                             <div className="flex gap-2">
-                              <Dialog>
-                                <DialogTrigger asChild>
-                                  <Button size="sm" variant="outline">
-                                    👁️ Review
-                                  </Button>
-                                </DialogTrigger>
-                                <DialogContent className="max-w-md">
-                                  <DialogHeader>
-                                    <DialogTitle>Review CA Application - {app.id}</DialogTitle>
-                                  </DialogHeader>
-                                  <div className="space-y-4">
-                                    <div>
-                                      <strong>Applicant:</strong> {app.applicantName}
-                                    </div>
-                                    <div>
-                                      <strong>Email:</strong> {app.email}
-                                    </div>
-                                    <div>
-                                      <strong>Experience:</strong> {app.experience}
-                                    </div>
-                                    <div>
-                                      <strong>Specialization:</strong> {app.specialization}
-                                    </div>
-                                    <div>
-                                      <strong>Qualifications:</strong> {app.qualifications}
-                                    </div>
-                                    <div>
-                                      <label className="block text-sm font-medium mb-2">Review Notes:</label>
-                                      <Textarea placeholder="Add your review notes here..." />
-                                    </div>
-                                    <div className="flex gap-2">
-                                      <Button
-                                        className="bg-green-600 hover:bg-green-700 flex-1"
-                                        onClick={() => handleApplicationAction(app.id, "approve")}
-                                      >
-                                        ✅ Approve
-                                      </Button>
-                                      <Button
-                                        variant="destructive"
-                                        className="flex-1"
-                                        onClick={() => handleApplicationAction(app.id, "reject")}
-                                      >
-                                        ❌ Reject
-                                      </Button>
-                                    </div>
-                                  </div>
-                                </DialogContent>
-                              </Dialog>
+                              <Button 
+                                size="sm" 
+                                variant="outline"
+                                onClick={() => handleReviewClick(app)}
+                              >
+                                👁️ Review
+                              </Button>
                             </div>
                           </TableCell>
                         </TableRow>

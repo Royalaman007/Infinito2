@@ -8,10 +8,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { CAApplications } from "./components/ca-applications"
 import { HomeDashboard } from "./components/home-dashboard"
 import { UserDetailPage } from "./components/user-detail-page"
+import { CAReviewPage } from "./components/ca-review-page"
 
 export default function AdminPortal() {
   const [activeTab, setActiveTab] = useState("home")
   const [selectedUser, setSelectedUser] = useState(null)
+  const [selectedCAApplication, setSelectedCAApplication] = useState(null)
 
   const handleStatClick = (type) => {
     console.log(`Clicked on ${type} stat`)
@@ -32,6 +34,16 @@ export default function AdminPortal() {
     setActiveTab("users")
   }
 
+  const handleCAReviewClick = (application) => {
+    setSelectedCAApplication(application)
+    setActiveTab("ca-review")
+  }
+
+  const handleBackToCA = () => {
+    setSelectedCAApplication(null)
+    setActiveTab("ca")
+  }
+
   const renderContent = () => {
     switch (activeTab) {
       case "home":
@@ -44,7 +56,10 @@ export default function AdminPortal() {
         return <UserDetailPage user={selectedUser} onBack={handleBackToUsers} />
 
       case "ca":
-        return <CAApplications />
+        return <CAApplications onCAReviewClick={handleCAReviewClick} />
+
+      case "ca-review":
+        return <CAReviewPage application={selectedCAApplication} onBack={handleBackToCA} />
 
       case "concerns":
         return (
